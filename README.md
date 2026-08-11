@@ -1,59 +1,277 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🪵 Wood Statue E-commerce System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Backend: Laravel (DDD + SOLID)
+> Frontend: Vue 3 (Modular + Scalable Architecture)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# 📌 1. Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🔹 Backend
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel
+- Laravel Sanctum (Authentication)
+- Spatie Laravel Data (DTO)
+- Spatie Permission (RBAC)
+- Spatie Media Library (Upload ảnh)
+- Spatie Query Builder (Filter API)
+- Redis (Cache + Queue)
+- MySQL / PostgreSQL
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🔹 Frontend
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Vue 3 + Vite
+- Vue Router
+- Pinia (State Management)
+- Axios (HTTP Client)
+- VueUse (Composable utilities)
+- Tailwind CSS
+- Ant Design Vue (UI)
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🔹 Dev Tools
 
-### Premium Partners
+- Docker (optional)
+- ESLint + Prettier
+- PHP CS Fixer
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+# 🏗 2. Project Structure
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+root/
+├── backend/
+├── frontend/
+└── README.md
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# ⚙️ 3. Backend Structure (DDD)
 
-## Security Vulnerabilities
+```
+backend/
+├── app/
+│   ├── Modules/
+│   │   ├── Product/
+│   │   ├── Order/
+│   │   ├── User/
+│   │   ├── Auth/
+│   │   ├── Inventory/
+│   │   ├── Category/
+│   │   └── Payment/
+│   │
+│   ├── Shared/
+│   │   ├── Domain/
+│   │   ├── Application/
+│   │   ├── Infrastructure/
+│   │   └── Exceptions/
+│
+├── routes/
+│   └── api.php
+├── database/
+├── config/
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📦 Module Structure (Example: Product)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+Product/
+├── Domain/
+│   ├── Entities/
+│   │   └── Product.php
+│   ├── ValueObjects/
+│   │   ├── Price.php
+│   │   └── WoodType.php
+│   ├── Repositories/
+│   │   └── ProductRepositoryInterface.php
+│   └── Services/
+│       └── ProductDomainService.php
+│
+├── Application/
+│   ├── DTOs/
+│   │   └── ProductDTO.php
+│   ├── UseCases/
+│   │   ├── CreateProduct/
+│   │   └── UpdateProduct/
+│   └── Services/
+│
+├── Infrastructure/
+│   ├── Persistence/
+│   │   ├── Models/
+│   │   ├── Repositories/
+│   │   └── Mappers/
+│   └── Providers/
+│
+├── Interfaces/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   ├── Requests/
+│   │   └── Resources/
+│   └── Routes/
+```
+
+---
+
+## 🔁 Backend Flow (DDD)
+
+```
+Controller
+   ↓
+UseCase (Application)
+   ↓
+Domain Logic
+   ↓
+Repository Interface
+   ↓
+Infrastructure (Eloquent)
+```
+
+---
+
+# 🎨 4. Frontend Structure (Vue Modular)
+
+```
+frontend/
+├── src/
+│   ├── modules/
+│   │   ├── product/
+│   │   ├── order/
+│   │   ├── auth/
+│   │   └── user/
+│
+│   ├── shared/
+│   │   ├── components/
+│   │   ├── utils/
+│   │   └── constants/
+│
+│   ├── layouts/
+│   │   ├── MainLayout.vue
+│   │   ├── AuthLayout.vue
+│   │   └── AdminLayout.vue
+│
+│   ├── router/
+│   ├── store/
+│   ├── services/
+│   └── assets/
+```
+
+---
+
+## 📦 Product Module (FE)
+
+```
+product/
+├── api/
+│   └── product.api.js
+├── store/
+│   └── product.store.js
+├── views/
+│   ├── ProductList.vue
+│   ├── ProductDetail.vue
+│   └── ProductCreate.vue
+├── components/
+│   ├── ProductCard.vue
+│   ├── ProductForm.vue
+│   └── ProductFilter.vue
+└── composables/
+    └── useProduct.js
+```
+
+---
+
+# 🔗 5. FE ↔ BE Mapping
+
+| Backend    | Frontend           |
+| ---------- | ------------------ |
+| Controller | api.js             |
+| DTO        | model              |
+| UseCase    | composable/service |
+| Domain     | business logic     |
+| Repository | API call           |
+
+---
+
+# 🔐 6. Authentication Flow
+
+- Laravel Sanctum (cookie-based)
+- Vue gọi API qua Axios
+- Middleware bảo vệ route backend
+- Pinia lưu state user
+
+---
+
+# ⚡ 7. Performance & Best Practices
+
+## Backend
+
+- Cache Redis (product list)
+- Queue xử lý async (order, email)
+- Index DB
+
+## Frontend
+
+- Lazy load routes
+- Code splitting
+- Debounce search
+
+---
+
+# 🚨 8. Coding Rules (SOLID + DDD)
+
+### ❌ Không được:
+
+- Controller gọi trực tiếp Model
+- Logic nằm trong Controller
+- FE xử lý business logic
+
+### ✅ Phải:
+
+- Dùng DTO
+- Tách Domain rõ ràng
+- Dependency Injection
+
+---
+
+# 🚀 9. Run Project
+
+## Backend
+
+```bash
+cd backend
+composer install
+php artisan migrate
+php artisan serve
+```
+
+## Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+# 📌 10. Future Improvements
+
+- CQRS (Command / Query separation)
+- Event-driven architecture
+- Microservices (nếu scale lớn)
+- ElasticSearch (search sản phẩm)
+
+---
+
+# 🎯 11. Summary
+
+- Clean Architecture + DDD
+- Scalable (startup → enterprise)
+- Maintainable
+- Production-ready
