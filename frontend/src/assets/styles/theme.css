@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+:root {
+  --wd-bg: #fbf7f0;
+  --wd-surface: #ffffff;
+  --wd-ink: #2b1d12;
+  --wd-ink-soft: #7a6a57;
+  --wd-wood-900: #3b2414;
+  --wd-wood-700: #5c3a21;
+  --wd-wood-500: #8b5a2b;
+  --wd-gold-600: #b8860b;
+  --wd-gold-400: #d9a441;
+  --wd-accent: #9a3324;
+  --wd-accent-soft: #f3e0da;
+  --wd-line: #e9dfcb;
+  --wd-shadow-sm: 0 2px 10px rgba(59, 36, 20, 0.06);
+  --wd-shadow-md: 0 10px 28px rgba(59, 36, 20, 0.12);
+  --font-display: 'Playfair Display', 'Be Vietnam Pro', serif;
+  --font-body: 'Be Vietnam Pro', 'Inter', sans-serif;
+}

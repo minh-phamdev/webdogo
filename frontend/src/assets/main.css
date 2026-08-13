@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+/* @import '../shared/styles/colors.css';
+@import '../shared/styles/spacing.css';
+@import '../shared/styles/radius.css';
+@import '../shared/styles/shadow.css'; */
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
