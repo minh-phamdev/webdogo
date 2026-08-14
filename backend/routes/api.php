@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProductMediaController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,30 +64,6 @@ Route::prefix('admin')
     });
 
 
-// PRODUCTS
-Route::prefix('products')->group(function () {
-
-    // PUBLIC
-    Route::get('/', [ProductController::class, 'index']);
-    Route::get('/{product}', [ProductController::class, 'show']);
-
-    // ADMIN
-    Route::middleware(['auth:sanctum', 'role:ADMIN'])->group(function () {
-        Route::post('/', [ProductController::class, 'store']);
-        Route::put('/{product}', [ProductController::class, 'update']);
-        Route::delete('/{product}', [ProductController::class, 'destroy']);
-    });
-
-    // PRODUCT MEDIA
-    Route::prefix('{product}/media')
-        ->middleware(['auth:sanctum', 'role:ADMIN'])
-        ->group(function () {
-
-            Route::get('/', [ProductMediaController::class, 'index']);
-            Route::post('/', [ProductMediaController::class, 'store']);
-            Route::delete('/{media}', [ProductMediaController::class, 'destroy']);
-        });
-});
 
 
 // PRODUCT GROUPS

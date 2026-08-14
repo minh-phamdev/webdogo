@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Modules\Product;
+
+use App\Modules\Product\Domain\Repositories\ProductMediaRepositoryInterface;
+use App\Modules\Product\Domain\Repositories\ProductRepositoryInterface;
+use App\Modules\Product\Infrastructure\Persistence\Repositories\ProductMediaRepository;
+use App\Modules\Product\Infrastructure\Persistence\Repositories\ProductRepository;
+use Illuminate\Support\ServiceProvider;
+
+class ProductServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->bind(
+            ProductRepositoryInterface::class,
+            ProductRepository::class
+        );
+
+        $this->app->bind(
+            ProductMediaRepositoryInterface::class,
+            ProductMediaRepository::class
+        );
+    }
+
+    public function boot(): void
+    {
+        $this->loadRoutesFrom(
+            __DIR__ . '/Interfaces/Routes/api.php'
+        );
+    }
+}

@@ -3,7 +3,7 @@
 namespace App\Modules\Product\Domain\Repositories;
 
 use App\Modules\Product\Infrastructure\Persistence\Models\ProductMediaModel;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface ProductMediaRepositoryInterface
 {
