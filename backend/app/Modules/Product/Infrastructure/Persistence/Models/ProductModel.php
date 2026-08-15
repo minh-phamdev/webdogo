@@ -2,13 +2,14 @@
 
 namespace App\Modules\Product\Infrastructure\Persistence\Models;
 
-use App\Models\Artisan;
-use App\Models\Category;
-use App\Models\FinishType;
-use App\Models\ProductGroup;
-use App\Models\ProductStatus;
-use App\Models\StatueTheme;
-use App\Models\WoodType;
+use App\Modules\Artisan\Infrastructure\Persistence\Models\ArtisanModel;
+use App\Modules\Category\Infrastructure\Persistence\Models\CategoryModel;
+use App\Modules\FinishType\Infrastructure\Persistence\Models\FinishTypeModel;
+use App\Modules\ProductGroup\Infrastructure\Persistence\Models\ProductGroupModel;
+use App\Modules\ProductStatus\Infrastructure\Persistence\Models\ProductStatusModel;
+use App\Modules\Product\Infrastructure\Persistence\Models\ProductMediaModel;
+use App\Modules\StatueTheme\Infrastructure\Persistence\Models\StatueThemeModel;
+use App\Modules\WoodType\Infrastructure\Persistence\Models\WoodTypeModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -74,7 +75,7 @@ class ProductModel extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(
-            Category::class,
+            CategoryModel::class,
             'category_id'
         );
     }
@@ -85,7 +86,7 @@ class ProductModel extends Model
     public function group(): BelongsTo
     {
         return $this->belongsTo(
-            ProductGroup::class,
+            ProductGroupModel::class,
             'group_id'
         );
     }
@@ -96,7 +97,7 @@ class ProductModel extends Model
     public function theme(): BelongsTo
     {
         return $this->belongsTo(
-            StatueTheme::class,
+            StatueThemeModel::class,
             'theme_id'
         );
     }
@@ -107,7 +108,7 @@ class ProductModel extends Model
     public function woodType(): BelongsTo
     {
         return $this->belongsTo(
-            WoodType::class,
+            WoodTypeModel::class,
             'wood_type_id'
         );
     }
@@ -118,7 +119,7 @@ class ProductModel extends Model
     public function finishType(): BelongsTo
     {
         return $this->belongsTo(
-            FinishType::class,
+            FinishTypeModel::class,
             'finish_id'
         );
     }
@@ -129,7 +130,7 @@ class ProductModel extends Model
     public function artisan(): BelongsTo
     {
         return $this->belongsTo(
-            Artisan::class,
+            ArtisanModel::class,
             'artisan_id'
         );
     }
@@ -140,7 +141,7 @@ class ProductModel extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(
-            ProductStatus::class,
+            ProductStatusModel::class,
             'status_id'
         );
     }

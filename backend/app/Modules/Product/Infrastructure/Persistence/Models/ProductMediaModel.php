@@ -9,6 +9,12 @@ class ProductMediaModel extends Model
 {
     protected $table = 'product_media';
 
+    /**
+     * Bảng product_media không sử dụng
+     * created_at / updated_at.
+     */
+    public $timestamps = false;
+
     protected $fillable = [
         'product_id',
         'media_type',

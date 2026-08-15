@@ -12,14 +12,10 @@ Route::prefix('api')->group(function () {
     |--------------------------------------------------------------------------
     */
 
+    // Public
     Route::get(
         'products',
         [ProductController::class, 'index']
-    );
-
-    Route::post(
-        'products',
-        [ProductController::class, 'store']
     );
 
     Route::get(
@@ -27,20 +23,29 @@ Route::prefix('api')->group(function () {
         [ProductController::class, 'show']
     );
 
-    Route::put(
-        'products/{product}',
-        [ProductController::class, 'update']
-    );
+    // Protected
+    Route::middleware('auth:sanctum')->group(function () {
 
-    Route::patch(
-        'products/{product}',
-        [ProductController::class, 'update']
-    );
+        Route::post(
+            'products',
+            [ProductController::class, 'store']
+        );
 
-    Route::delete(
-        'products/{product}',
-        [ProductController::class, 'destroy']
-    );
+        Route::put(
+            'products/{product}',
+            [ProductController::class, 'update']
+        );
+
+        Route::patch(
+            'products/{product}',
+            [ProductController::class, 'update']
+        );
+
+        Route::delete(
+            'products/{product}',
+            [ProductController::class, 'destroy']
+        );
+    });
 
 
     /*
@@ -49,28 +54,33 @@ Route::prefix('api')->group(function () {
     |--------------------------------------------------------------------------
     */
 
+    // Public
     Route::get(
         'products/{product}/media',
         [ProductMediaController::class, 'index']
     );
 
-    Route::post(
-        'products/{product}/media',
-        [ProductMediaController::class, 'store']
-    );
+    // Protected
+    Route::middleware('auth:sanctum')->group(function () {
 
-    Route::delete(
-        'products/{product}/media/{media}',
-        [ProductMediaController::class, 'destroy']
-    );
+        Route::post(
+            'products/{product}/media',
+            [ProductMediaController::class, 'store']
+        );
 
-    Route::put(
-    '/products/{product}/media/{media}',
-    [ProductMediaController::class, 'update']
-);
+        Route::delete(
+            'products/{product}/media/{media}',
+            [ProductMediaController::class, 'destroy']
+        );
 
-Route::patch(
-    '/products/{product}/media/{media}',
-    [ProductMediaController::class, 'update']
-);
+        Route::put(
+            'products/{product}/media/{media}',
+            [ProductMediaController::class, 'update']
+        );
+
+        Route::patch(
+            'products/{product}/media/{media}',
+            [ProductMediaController::class, 'update']
+        );
+    });
 });

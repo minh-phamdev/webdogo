@@ -29,6 +29,7 @@ class UpdateProductMediaRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:50',
+                'required_if:media_type,VIDEO',
             ],
 
             'is_thumbnail' => [

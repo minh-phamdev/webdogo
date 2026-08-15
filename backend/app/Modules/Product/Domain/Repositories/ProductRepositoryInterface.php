@@ -2,44 +2,44 @@
 
 namespace App\Modules\Product\Domain\Repositories;
 
-use App\Modules\Product\Infrastructure\Persistence\Models\ProductMediaModel;
-use Illuminate\Support\Collection;
+use App\Modules\Product\Infrastructure\Persistence\Models\ProductModel;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-interface ProductMediaRepositoryInterface
+interface ProductRepositoryInterface
 {
     /**
-     * Lấy danh sách media của sản phẩm.
+     * Lấy danh sách sản phẩm có filter, sort và pagination.
      */
-    public function getByProductId(
-        int $productId
-    ): Collection;
+    public function paginate(
+        array $filters
+    ): LengthAwarePaginator;
 
     /**
-     * Tìm media theo ID.
+     * Tìm sản phẩm theo ID.
      */
     public function find(
         int $id
-    ): ?ProductMediaModel;
+    ): ?ProductModel;
 
     /**
-     * Tạo media.
+     * Tạo sản phẩm.
      */
     public function create(
         array $data
-    ): ProductMediaModel;
+    ): ProductModel;
 
     /**
-     * Cập nhật media.
+     * Cập nhật sản phẩm.
      */
     public function update(
-        ProductMediaModel $media,
+        ProductModel $product,
         array $data
-    ): ProductMediaModel;
+    ): ProductModel;
 
     /**
-     * Xóa media.
+     * Xóa sản phẩm.
      */
     public function delete(
-        ProductMediaModel $media
+        ProductModel $product
     ): bool;
 }
