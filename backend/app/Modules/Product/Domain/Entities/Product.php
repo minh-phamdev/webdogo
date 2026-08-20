@@ -2,56 +2,39 @@
 
 namespace App\Modules\Product\Domain\Entities;
 
+use App\Modules\Product\Domain\ValueObjects\{
+    Money,
+    Dimension,
+    Weight,
+    Inventory,
+    Sku,
+    Slug,
+    ProductStatus
+};
+
 class Product
 {
     public function __construct(
-        public ?int $id = null,
-
-        public string $sku = '',
-
-        public ?int $groupId = null,
-
-        public int $categoryId = 0,
-
-        public int $themeId = 0,
-
-        public int $woodTypeId = 0,
-
-        public ?int $finishId = null,
-
-        public ?int $artisanId = null,
-
-        public int $statusId = 0,
-
-        public string $name = '',
-
-        public ?string $slug = null,
-
-        public ?string $description = null,
-
-        public float $price = 0,
-
-        public ?float $compareAtPrice = null,
-
-        public float $heightCm = 0,
-
-        public ?float $widthCm = null,
-
-        public ?float $depthCm = null,
-
-        public ?float $weightKg = 0,
-
-        public bool $isUnique = false,
-
-        public bool $isHandmade = false,
-
-        public ?int $craftedYear = null,
-
-        public int $quantity = 0,
-
-        public int $reservedQuantity = 0,
-
-        public ?int $leadTimeDays = null,
-    ) {
-    }
+        public ?int $id,
+        public Sku $sku,
+        public ?int $groupId,
+        public int $categoryId,
+        public int $themeId,
+        public int $woodTypeId,
+        public ?int $finishId,
+        public ?int $artisanId,
+        public ProductStatus $status,
+        public string $name,
+        public ?Slug $slug,
+        public ?string $description,
+        public Money $price,
+        public ?Money $compareAtPrice,
+        public Dimension $dimension,
+        public ?Weight $weight,
+        public bool $isUnique,
+        public bool $isHandmade,
+        public ?int $craftedYear,
+        public Inventory $inventory,
+        public ?int $leadTimeDays,
+    ) {}
 }

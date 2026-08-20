@@ -82,130 +82,109 @@ backend/
 ## 📦 Module Structure (Example: Product)
 
 ```
-app/
-├── Modules/
-│   ├── User/
-│   │   ├── Domain/
-│   │   │   ├── Entities/
-│   │   │   │   └── User.php
-│   │   │   │
-│   │   │   ├── ValueObjects/
-│   │   │   │   └── Email.php
-│   │   │   │
-│   │   │   ├── Repositories/
-│   │   │   │   └── UserRepositoryInterface.php      ✅ interface
-│   │   │   │
-│   │   │   ├── Services/
-│   │   │   │   ├── UserDomainService.php
-│   │   │   │   └── PasswordHasherInterface.php      ✅ interface (external)
-│   │   │   │
-│   │   │   └── Exceptions/
-│   │   │       └── UserException.php
-│   │   │
-│   │   ├── Application/
-│   │   │   ├── DTOs/
-│   │   │   │   └── CreateUserDTO.php
-│   │   │   │
-│   │   │   ├── UseCases/
-│   │   │   │   ├── CreateUserUseCase.php
-│   │   │   │   └── GetUserUseCase.php
-│   │   │   │
-│   │   │   └── Services/
-│   │   │       └── UserAppService.php (optional)
-│   │   │
-│   │   ├── Infrastructure/
-│   │   │   ├── Persistence/
-│   │   │   │   ├── Models/
-│   │   │   │   │   └── UserModel.php
-│   │   │   │   │
-│   │   │   │   ├── Repositories/
-│   │   │   │   │   └── UserRepository.php           ✅ implements interface
-│   │   │   │   │
-│   │   │   │   └── Mappers/
-│   │   │   │       └── UserMapper.php
-│   │   │   │
-│   │   │   ├── Services/
-│   │   │   │   └── BcryptPasswordHasher.php        ✅ implements interface
-│   │   │   │
-│   │   │   ├── Http/
-│   │   │   │   ├── Controllers/
-│   │   │   │   │   └── UserController.php
-│   │   │   │   │
-│   │   │   │   ├── Requests/
-│   │   │   │   │   └── CreateUserRequest.php
-│   │   │   │   │
-│   │   │   │   └── Resources/
-│   │   │   │       └── UserResource.php
-│   │   │   │
-│   │   │   └── Providers/
-│   │   │       └── UserServiceProvider.php         ✅ bind interface
-│   │   │
-│   │   ├── Swagger/
-│   │   │   ├── Schemas/
-│   │   │   │   └── UserSchema.php
-│   │   │   ├── Requests/
-│   │   │   │   └── CreateUserRequestSchema.php
-│   │   │   └── Responses/
-│   │   │       └── UserResponse.php
-│   │   │
-│   │   └── Routes/
-│   │       └── api.php
+Product/                                # MODULE SẢN PHẨM (toàn bộ domain Product)
+
+├── Domain/                             # TẦNG NGHIỆP VỤ CỐT LÕI (KHÔNG phụ thuộc Laravel)
+
+│   ├── Entities/                       # Thực thể nghiệp vụ (Business Object)
+│   │   ├── Product.php                # Sản phẩm - chứa trạng thái + hành vi chính
+│   │   ├── ProductMedia.php           # Media sản phẩm (ảnh/video)
 │   │
-│   ├── Order/
-│   │   └── (same structure as User)
+│   ├── ValueObjects/                  # Đối tượng giá trị (immutable - không ID)
+│   │   ├── Money.php                  # Tiền tệ (giá, compare price)
+│   │   ├── Slug.php                  # URL thân thiện
+│   │   ├── Sku.php                   # Mã sản phẩm duy nhất
+│   │   ├── Dimension.php             # Kích thước (cao, rộng, sâu)
+│   │   ├── Weight.php                # Cân nặng
+│   │   ├── Inventory.php             # Tồn kho + reserved
+│   │   ├── ProductStatus.php         # Trạng thái sản phẩm
 │   │
-│   └── Crawl/   👈 module riêng cho crawler (khuyến nghị)
-│       ├── Domain/
-│       │   ├── Entities/
-│       │   ├── Repositories/
-│       │   │   └── CrawlRepositoryInterface.php
-│       │   └── Services/
-│       │
-│       ├── Application/
-│       │   ├── DTOs/
-│       │   └── UseCases/
-│       │       └── CrawlProductUseCase.php
-│       │
-│       ├── Infrastructure/
-│       │   ├── Crawlers/
-│       │   │   ├── BaseCrawler.php
-│       │   │   └── PhuongLinhCrawler.php
-│       │   │
-│       │   ├── Parsers/
-│       │   │   └── ProductParser.php
-│       │   │
-│       │   ├── Persistence/
-│       │   │   └── Repositories/
-│       │   │       └── CrawlRepository.php
-│       │   │
-│       │   └── Queue/
-│       │       └── CrawlJob.php
-│       │
-│       └── Swagger/
-│
-├── Swagger/
-│   ├── OpenApi.php
-│   ├── Schemas/
-│   │   ├── ApiResponse.php
-│   │   └── ApiError.php
-│   └── Responses/
-│       └── CommonResponses.php
-│
-├── Shared/
-│   ├── Domain/
-│   │   ├── ValueObjects/
-│   │   ├── Exceptions/
-│   │   └── Contracts/                ✅ interface dùng chung
+│   ├── Repositories/                  # CONTRACT (GIAO ƯỚC LƯU TRỮ DỮ LIỆU)
+│   │   ├── ProductRepositoryInterface.php      # CRUD + persistence Product
+│   │   ├── ProductMediaRepositoryInterface.php # CRUD media
 │   │
-│   ├── Application/
-│   │   └── DTOs/
+│   ├── Services/                      # DOMAIN SERVICE (logic phức tạp nhiều entity)
+│   │   ├── ProductServiceInterface.php  # ❗ chỉ dùng khi có business logic phức tạp (giảm/validate tồn kho,...)
 │   │
-│   └── Infrastructure/
-│       └── Helpers/
-│
-├── Providers/
-│   └── AppServiceProvider.php
----
+│   ├── Exceptions/                    # Ngoại lệ nghiệp vụ
+│       ├── ProductException.php       # Base exception cho Product domain
+
+
+├── Application/                       # TẦNG USE CASE (điều phối nghiệp vụ)
+
+│   ├── DTOs/                          # Data Transfer Object (dữ liệu vào UseCase)
+│   │   ├── CreateProductDTO.php       # dữ liệu tạo sản phẩm
+│   │   ├── UpdateProductDTO.php       # dữ liệu update sản phẩm
+│   │   ├── CreateProductMediaDTO.php  # tạo media
+│   │   ├── UpdateProductMediaDTO.php  # update media
+│   │   ├── ProductFilterDTO.php       # filter list product
+│   │
+│   ├── UseCases/                      # BUSINESS FLOW (luồng xử lý nghiệp vụ)
+│   │   ├── Product/
+│   │   │   ├── CreateProductUseCase.php   # tạo sản phẩm
+│   │   │   ├── UpdateProductUseCase.php   # cập nhật sản phẩm
+│   │   │   ├── DeleteProductUseCase.php   # xóa sản phẩm
+│   │   │   ├── GetProductUseCase.php      # lấy chi tiết sản phẩm
+│   │   │   ├── ListProductsUseCase.php    # danh sách sản phẩm
+│   │   │
+│   │   ├── ProductMedia/
+│   │       ├── CreateProductMediaUseCase.php  # upload media
+│   │       ├── UpdateProductMediaUseCase.php  # update media
+│   │       ├── DeleteProductMediaUseCase.php  # xóa media
+│   │       ├── GetProductMediaUseCase.php     # lấy media
+│   │       ├── ListProductMediaUseCase.php    # danh sách media
+│   │
+│   ├── Queries/                       # READ MODEL (tối ưu truy vấn)
+│       ├── ProductQueryService.php    # xử lý filter + paginate + search
+
+
+├── Infrastructure/                   # TẦNG KỸ THUẬT (Laravel, DB, external)
+
+│   ├── Persistence/
+│   │   ├── Models/                   # Eloquent ORM (DB layer)
+│   │   │   ├── Product.php           # model bảng products
+│   │   │   ├── ProductMedia.php      # model media
+│   │   │
+│   │   ├── Repositories/             # IMPLEMENTATION của Domain Repository
+│   │   │   ├── ProductRepository.php
+│   │   │   ├── ProductMediaRepository.php
+│   │   │
+│   │   ├── Mappers/                  # mapping giữa DB ↔ Domain
+│   │       ├── ProductMapper.php      # convert Model ↔ Entity + VO
+│   │
+│   ├── Providers/
+│   │   ├── ProductServiceProvider.php # bind interface → implementation
+│   │
+│   ├── Services/                      # SERVICE kỹ thuật (KHÔNG phải business)
+│       ├── ProductService.php        # ❗ chỉ dùng nếu gọi API ngoài / xử lý file / cache
+
+
+├── Interfaces/                       # TẦNG GIAO TIẾP (API / HTTP layer)
+
+│   ├── Http/
+│   │   ├── Controllers/             # CONTROLLER (entry point API)
+│   │   │   ├── ProductController.php
+│   │   │   ├── ProductMediaController.php
+│   │   │
+│   │   ├── Requests/                # VALIDATION input (FormRequest)
+│   │   │   ├── StoreProductRequest.php
+│   │   │   ├── UpdateProductRequest.php
+│   │   │   ├── StoreProductMediaRequest.php
+│   │   │   ├── UpdateProductMediaRequest.php
+│   │   │
+│   │   ├── Resources/               # FORMAT OUTPUT API (JSON response)
+│   │       ├── ProductResource.php   # format product response
+│   │       ├── ProductMediaResource.php # format media response
+
+
+├── Routes/                          # ROUTE MODULE
+│   ├── api.php                      # khai báo route Product module
+
+
+├── Swagger/                         # DOCUMENT API
+│   ├── Requests/                    # schema request swagger
+│   ├── Responses/                   # schema response swagger
+│   ├── Schemas/                     # model schema API docs
 ✅ Interface nằm ở:
 Domain/
 ✅ Implementation nằm ở:

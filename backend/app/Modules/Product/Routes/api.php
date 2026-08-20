@@ -1,86 +1,45 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Modules\Product\Interfaces\Http\Controllers\ProductController;
 use App\Modules\Product\Interfaces\Http\Controllers\ProductMediaController;
-use Illuminate\Support\Facades\Route;
 
-Route::prefix('api')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Products
+|--------------------------------------------------------------------------
+*/
 
-    /*
-    |--------------------------------------------------------------------------
-    | Products
-    |--------------------------------------------------------------------------
-    */
+Route::prefix('products')->group(function () {
 
     // Public
-    Route::get(
-        'products',
-        [ProductController::class, 'index']
-    );
-
-    Route::get(
-        'products/{product}',
-        [ProductController::class, 'show']
-    );
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('{id}', [ProductController::class, 'show'])->name('products.show');
 
     // Protected
     Route::middleware('auth:sanctum')->group(function () {
-
-        Route::post(
-            'products',
-            [ProductController::class, 'store']
-        );
-
-        Route::put(
-            'products/{product}',
-            [ProductController::class, 'update']
-        );
-
-        Route::patch(
-            'products/{product}',
-            [ProductController::class, 'update']
-        );
-
-        Route::delete(
-            'products/{product}',
-            [ProductController::class, 'destroy']
-        );
+        Route::post('/', [ProductController::class, 'store'])->name('products.store');
+        Route::match(['put', 'patch'], '{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     });
+});
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product Media
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Product Media
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('products/{productId}/media')->group(function () {
 
     // Public
-    Route::get(
-        'products/{product}/media',
-        [ProductMediaController::class, 'index']
-    );
+    Route::get('/', [ProductMediaController::class, 'index'])->name('products.media.index');
 
     // Protected
     Route::middleware('auth:sanctum')->group(function () {
-
-        Route::post(
-            'products/{product}/media',
-            [ProductMediaController::class, 'store']
-        );
-
-        Route::delete(
-            'products/{product}/media/{media}',
-            [ProductMediaController::class, 'destroy']
-        );
-
-        Route::put(
-            'products/{product}/media/{media}',
-            [ProductMediaController::class, 'update']
-        );
-
-        Route::patch(
-            'products/{product}/media/{media}',
-            [ProductMediaController::class, 'update']
-        );
+        Route::post('/', [ProductMediaController::class, 'store'])->name('products.media.store');
+        Route::match(['put', 'patch'], '{mediaId}', [ProductMediaController::class, 'update'])->name('products.media.update');
+        Route::delete('{mediaId}', [ProductMediaController::class, 'destroy'])->name('products.media.destroy');
     });
 });

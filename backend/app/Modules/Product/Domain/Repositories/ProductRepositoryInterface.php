@@ -2,44 +2,13 @@
 
 namespace App\Modules\Product\Domain\Repositories;
 
-use App\Modules\Product\Infrastructure\Persistence\Models\ProductModel;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Modules\Product\Domain\Entities\Product;
 
 interface ProductRepositoryInterface
 {
-    /**
-     * Lấy danh sách sản phẩm có filter, sort và pagination.
-     */
-    public function paginate(
-        array $filters
-    ): LengthAwarePaginator;
+    public function findById(int $id): ?Product;
 
-    /**
-     * Tìm sản phẩm theo ID.
-     */
-    public function find(
-        int $id
-    ): ?ProductModel;
+    public function save(Product $product): void;
 
-    /**
-     * Tạo sản phẩm.
-     */
-    public function create(
-        array $data
-    ): ProductModel;
-
-    /**
-     * Cập nhật sản phẩm.
-     */
-    public function update(
-        ProductModel $product,
-        array $data
-    ): ProductModel;
-
-    /**
-     * Xóa sản phẩm.
-     */
-    public function delete(
-        ProductModel $product
-    ): bool;
+    public function delete(Product $product): void;
 }
