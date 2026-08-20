@@ -5,7 +5,7 @@ namespace App\Modules\Product\Infrastructure\Persistence\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductMediaModel extends Model
+class ProductMedia extends Model
 {
     protected $table = 'product_media';
 

@@ -82,55 +82,153 @@ backend/
 ## 📦 Module Structure (Example: Product)
 
 ```
-Product/
-├── Domain/
-│   ├── Entities/
-│   │   └── Product.php
-│   ├── ValueObjects/
-│   │   ├── Price.php
-│   │   └── WoodType.php
-│   ├── Repositories/
-│   │   └── ProductRepositoryInterface.php
-│   └── Services/
-│       └── ProductDomainService.php
+app/
+├── Modules/
+│   ├── User/
+│   │   ├── Domain/
+│   │   │   ├── Entities/
+│   │   │   │   └── User.php
+│   │   │   │
+│   │   │   ├── ValueObjects/
+│   │   │   │   └── Email.php
+│   │   │   │
+│   │   │   ├── Repositories/
+│   │   │   │   └── UserRepositoryInterface.php      ✅ interface
+│   │   │   │
+│   │   │   ├── Services/
+│   │   │   │   ├── UserDomainService.php
+│   │   │   │   └── PasswordHasherInterface.php      ✅ interface (external)
+│   │   │   │
+│   │   │   └── Exceptions/
+│   │   │       └── UserException.php
+│   │   │
+│   │   ├── Application/
+│   │   │   ├── DTOs/
+│   │   │   │   └── CreateUserDTO.php
+│   │   │   │
+│   │   │   ├── UseCases/
+│   │   │   │   ├── CreateUserUseCase.php
+│   │   │   │   └── GetUserUseCase.php
+│   │   │   │
+│   │   │   └── Services/
+│   │   │       └── UserAppService.php (optional)
+│   │   │
+│   │   ├── Infrastructure/
+│   │   │   ├── Persistence/
+│   │   │   │   ├── Models/
+│   │   │   │   │   └── UserModel.php
+│   │   │   │   │
+│   │   │   │   ├── Repositories/
+│   │   │   │   │   └── UserRepository.php           ✅ implements interface
+│   │   │   │   │
+│   │   │   │   └── Mappers/
+│   │   │   │       └── UserMapper.php
+│   │   │   │
+│   │   │   ├── Services/
+│   │   │   │   └── BcryptPasswordHasher.php        ✅ implements interface
+│   │   │   │
+│   │   │   ├── Http/
+│   │   │   │   ├── Controllers/
+│   │   │   │   │   └── UserController.php
+│   │   │   │   │
+│   │   │   │   ├── Requests/
+│   │   │   │   │   └── CreateUserRequest.php
+│   │   │   │   │
+│   │   │   │   └── Resources/
+│   │   │   │       └── UserResource.php
+│   │   │   │
+│   │   │   └── Providers/
+│   │   │       └── UserServiceProvider.php         ✅ bind interface
+│   │   │
+│   │   ├── Swagger/
+│   │   │   ├── Schemas/
+│   │   │   │   └── UserSchema.php
+│   │   │   ├── Requests/
+│   │   │   │   └── CreateUserRequestSchema.php
+│   │   │   └── Responses/
+│   │   │       └── UserResponse.php
+│   │   │
+│   │   └── Routes/
+│   │       └── api.php
+│   │
+│   ├── Order/
+│   │   └── (same structure as User)
+│   │
+│   └── Crawl/   👈 module riêng cho crawler (khuyến nghị)
+│       ├── Domain/
+│       │   ├── Entities/
+│       │   ├── Repositories/
+│       │   │   └── CrawlRepositoryInterface.php
+│       │   └── Services/
+│       │
+│       ├── Application/
+│       │   ├── DTOs/
+│       │   └── UseCases/
+│       │       └── CrawlProductUseCase.php
+│       │
+│       ├── Infrastructure/
+│       │   ├── Crawlers/
+│       │   │   ├── BaseCrawler.php
+│       │   │   └── PhuongLinhCrawler.php
+│       │   │
+│       │   ├── Parsers/
+│       │   │   └── ProductParser.php
+│       │   │
+│       │   ├── Persistence/
+│       │   │   └── Repositories/
+│       │   │       └── CrawlRepository.php
+│       │   │
+│       │   └── Queue/
+│       │       └── CrawlJob.php
+│       │
+│       └── Swagger/
 │
-├── Application/
-│   ├── DTOs/
-│   │   └── ProductDTO.php
-│   ├── UseCases/
-│   │   ├── CreateProduct/
-│   │   └── UpdateProduct/
-│   └── Services/
+├── Swagger/
+│   ├── OpenApi.php
+│   ├── Schemas/
+│   │   ├── ApiResponse.php
+│   │   └── ApiError.php
+│   └── Responses/
+│       └── CommonResponses.php
 │
-├── Infrastructure/
-│   ├── Persistence/
-│   │   ├── Models/
-│   │   ├── Repositories/
-│   │   └── Mappers/
-│   └── Providers/
+├── Shared/
+│   ├── Domain/
+│   │   ├── ValueObjects/
+│   │   ├── Exceptions/
+│   │   └── Contracts/                ✅ interface dùng chung
+│   │
+│   ├── Application/
+│   │   └── DTOs/
+│   │
+│   └── Infrastructure/
+│       └── Helpers/
 │
-├── Interfaces/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   ├── Requests/
-│   │   └── Resources/
-│   └── Routes/
-```
-
+├── Providers/
+│   └── AppServiceProvider.php
 ---
+✅ Interface nằm ở:
+Domain/
+✅ Implementation nằm ở:
+Infrastructure/
+✅ Binding nằm ở:
+Providers/
 
 ## 🔁 Backend Flow (DDD)
 
 ```
+
 Controller
-   ↓
-UseCase (Application)
-   ↓
-Domain Logic
-   ↓
+↓
+UseCase
+↓
+Domain
+↓
 Repository Interface
-   ↓
-Infrastructure (Eloquent)
+↓
+Repository Implementation
+↓
+DB
+
 ```
 
 ---
@@ -138,28 +236,30 @@ Infrastructure (Eloquent)
 # 🎨 4. Frontend Structure (Vue Modular)
 
 ```
+
 frontend/
 ├── src/
-│   ├── modules/
-│   │   ├── product/
-│   │   ├── order/
-│   │   ├── auth/
-│   │   └── user/
+│ ├── modules/
+│ │ ├── product/
+│ │ ├── order/
+│ │ ├── auth/
+│ │ └── user/
 │
-│   ├── shared/
-│   │   ├── components/
-│   │   ├── utils/
-│   │   └── constants/
+│ ├── shared/
+│ │ ├── components/
+│ │ ├── utils/
+│ │ └── constants/
 │
-│   ├── layouts/
-│   │   ├── MainLayout.vue
-│   │   ├── AuthLayout.vue
-│   │   └── AdminLayout.vue
+│ ├── layouts/
+│ │ ├── MainLayout.vue
+│ │ ├── AuthLayout.vue
+│ │ └── AdminLayout.vue
 │
-│   ├── router/
-│   ├── store/
-│   ├── services/
-│   └── assets/
+│ ├── router/
+│ ├── store/
+│ ├── services/
+│ └── assets/
+
 ```
 
 ---
@@ -167,22 +267,24 @@ frontend/
 ## 📦 Product Module (FE)
 
 ```
+
 product/
 ├── api/
-│   └── product.api.js
+│ └── product.api.js
 ├── store/
-│   └── product.store.js
+│ └── product.store.js
 ├── views/
-│   ├── ProductList.vue
-│   ├── ProductDetail.vue
-│   └── ProductCreate.vue
+│ ├── ProductList.vue
+│ ├── ProductDetail.vue
+│ └── ProductCreate.vue
 ├── components/
-│   ├── ProductCard.vue
-│   ├── ProductForm.vue
-│   └── ProductFilter.vue
+│ ├── ProductCard.vue
+│ ├── ProductForm.vue
+│ └── ProductFilter.vue
 └── composables/
-    └── useProduct.js
-```
+└── useProduct.js
+
+````
 
 ---
 
@@ -248,7 +350,7 @@ cd backend
 composer install
 php artisan migrate
 php artisan serve
-```
+````
 
 ## Frontend
 
